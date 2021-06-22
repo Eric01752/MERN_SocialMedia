@@ -12,7 +12,7 @@ const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 router.get('/:username', async (req, res) => {
   const { username } = req.params;
-
+  console.log(req.params);
   try {
     //Check for valid data
     if (username.length < 1) return res.status(401).send('Invaild');
@@ -79,7 +79,11 @@ router.post('/', async (req, res) => {
     await new ProfileModel(profileFields).save();
 
     //Create follower/following for current user in database
-    await new FollowerModel({ user: user._id, followers: [], following: [] });
+    await new FollowerModel({
+      user: user._id,
+      followers: [],
+      following: [],
+    }).save();
 
     //Send the token
     const payload = { userId: user._id };

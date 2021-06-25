@@ -3,6 +3,7 @@ import { parseCookies, destroyCookie } from 'nookies';
 import baseUrl from '../utils/baseUrl';
 import { redirectUser } from '../utils/authUser';
 import Layout from '../components/Layout/Layout';
+import 'react-toastify/dist/ReactToastify.css';
 import 'semantic-ui-css/semantic.min.css';
 
 function MyApp({ Component, pageProps }) {

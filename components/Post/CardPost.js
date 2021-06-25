@@ -134,7 +134,7 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
                   )
               )}
 
-            {comments > 3 && (
+            {comments.length > 3 && (
               <Button content='View More' color='teal' basic circular />
             )}
 

@@ -15,6 +15,7 @@ import CommentInputField from './CommentInputField';
 import calculateTime from '../../utils/calculateTime';
 import Link from 'next/link';
 import { deletePost, likePost } from '../../utils/postActions';
+import LikesList from './LikesList';
 
 function CardPost({ post, user, setPosts, setShowToastr }) {
   const [likes, setLikes] = useState(post.likes);
@@ -108,11 +109,16 @@ function CardPost({ post, user, setPosts, setShowToastr }) {
               }
             />
 
-            {likes.length > 0 && (
-              <span className='spanLikesList'>
-                {`${likes.length} ${likes.length === 1 ? 'like' : 'likes'}`}
-              </span>
-            )}
+            <LikesList
+              postId={post._id}
+              trigger={
+                likes.length > 0 && (
+                  <span className='spanLikesList'>
+                    {`${likes.length} ${likes.length === 1 ? 'like' : 'likes'}`}
+                  </span>
+                )
+              }
+            />
 
             <Icon
               name='comment outline'

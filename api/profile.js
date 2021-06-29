@@ -217,4 +217,48 @@ router.post('/update', authMiddleware, async (req, res) => {
   }
 });
 
+//Update password
+router.post('/settings/password', authMiddleware, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (newPassword < 6) {
+      return res.status(401).send('Password must be at least 6 characters');
+    }
+
+    const user = await UserModel.findById(req.userId).select('+password');
+
+    const isPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!isPassword) {
+      return res.status(401).send('Invalid password');
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Server error');
+  }
+});
+
+//Update message popup settings
+router.post('/settings/messagePopup', authMiddleware, async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId);
+
+    if (user.newMessagePopup) {
+      user.newMessagePopup = false;
+      await user.save();
+    } else {
+      user.newMessagePopup = true;
+      await user.save();
+    }
+
+    return res.status(200).send('Success');
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;

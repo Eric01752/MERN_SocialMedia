@@ -5,6 +5,7 @@ import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import cookie from 'js-cookie';
 import { NoFollowData } from '../Layout/NoData';
+import { followUser, unfollowUser } from '../../utils/profileActions';
 
 function Followers({
   user,
@@ -63,6 +64,19 @@ function Followers({
                         content={isFollowing ? 'Following' : 'Follow'}
                         icon={isFollowing ? 'check' : 'add user'}
                         disabled={followLoading}
+                        onClick={async () => {
+                          setFollowLoading(true);
+                          isFollowing
+                            ? await unfollowUser(
+                                profileFollower.user._id,
+                                setUserFollowStats
+                              )
+                            : await followUser(
+                                profileFollower.user._id,
+                                setUserFollowStats
+                              );
+                          setFollowLoading(false);
+                        }}
                       />
                     )}
                   </List.Content>

@@ -62,3 +62,29 @@ export const profileUpdate = async (
     setLoading(false);
   }
 };
+
+export const passwordUpdate = async (setSuccess, userPasswords) => {
+  try {
+    const { currentPassword, newPassword } = userPasswords;
+
+    await Axios.post('/settings/password', { currentPassword, newPassword });
+    setSuccess(true);
+  } catch (error) {
+    alert(catchErrors(error));
+  }
+};
+
+export const toggleMessagePopup = async (
+  popupSetting,
+  setPopupSetting,
+  setSuccess
+) => {
+  try {
+    await Axios.post('/settings/messagePopup');
+
+    setPopupSetting(!popupSetting);
+    setSuccess(true);
+  } catch (error) {
+    alert(catchErrors(error));
+  }
+};

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Divider, Message, List, Checkbox } from 'semantic-ui-react';
 import UpdatePassword from './UpdatePassword';
+import { toggleMessagePopup } from '../../utils/profileActions';
 
 function Settings({ newMessagePopup }) {
   const [showUpdatePassword, setShowUpdatePassword] = useState(false);
@@ -69,7 +70,14 @@ function Settings({ newMessagePopup }) {
             <div style={{ marginTop: '10px' }}>
               Control whether a Popup should appear when there is a new message?
               <br />
-              <Checkbox checked={popupSetting} toggle onChange={() => {}} />
+              <br />
+              <Checkbox
+                checked={popupSetting}
+                toggle
+                onChange={() =>
+                  toggleMessagePopup(popupSetting, setPopupSetting, setSuccess)
+                }
+              />
             </div>
           )}
         </List.Item>

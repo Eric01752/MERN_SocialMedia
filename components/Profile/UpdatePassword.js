@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, List, Divider, Button, Message } from 'semantic-ui-react';
+import { passwordUpdate } from '../../utils/profileActions';
 
 function UpdatePassword({ setSuccess, setShowUpdatePassword }) {
   const [userPasswords, setUserPasswords] = useState({
@@ -23,8 +24,13 @@ function UpdatePassword({ setSuccess, setShowUpdatePassword }) {
     setUserPasswords((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    await passwordUpdate(setSuccess, userPasswords);
+    setLoading(false);
+
+    setShowUpdatePassword(false);
   };
 
   useEffect(() => {

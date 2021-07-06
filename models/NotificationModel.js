@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const NotificationSchema = new Schema({
-  user: { typr: Schema.Types.ObjectId, ref: 'User' },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   notifications: [
     {
       type: { type: String, enum: ['newLike', 'newComment', 'newFollower'] },

@@ -3,6 +3,7 @@ const router = express.Router();
 const UserModel = require('../models/UserModel');
 const ProfileModel = require('../models/ProfileModel');
 const FollowerModel = require('../models/FollowerModel');
+const NotificationModel = require('../models/NotificationModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
@@ -84,6 +85,7 @@ router.post('/', async (req, res) => {
       followers: [],
       following: [],
     }).save();
+    await new NotificationModel({ user: user._id, notifications: [] }).save();
 
     //Send the token
     const payload = { userId: user._id };

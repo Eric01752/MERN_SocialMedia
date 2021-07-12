@@ -43,16 +43,16 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
                 overflow: 'auto',
                 height: '40rem',
                 position: 'relative',
+                width: '100%',
               }}
             >
               <Feed size='small'>
-                {notification.map((notification) => (
+                {notifications.map((notification) => (
                   <>
                     {notification.type === 'newLike' &&
                       notification.post !== null && (
                         <LikeNotification
                           key={notification._id}
-                          user={user}
                           notification={notification}
                         />
                       )}
@@ -61,7 +61,6 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
                       notification.post !== null && (
                         <CommentNotification
                           key={notification._id}
-                          user={user}
                           notification={notification}
                         />
                       )}

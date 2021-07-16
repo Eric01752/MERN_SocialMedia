@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { parseCookies } from 'nookies';
@@ -18,8 +19,23 @@ import { NoMessages } from '../components/Layout/NoData';
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
   const router = useRouter();
+  const [connectedUsers, setConnectedUsers] = usestate([]);
+
+  const socket = useRef();
 
   useEffect(() => {
+    if (!socket.current) {
+      socket.current = io(baseUrl);
+    }
+
+    if (socket.current) {
+      socket.current.emit('join', { userId: user._id });
+
+      socket.current.on('connectedUsers', ({ users }) => {
+        users.length > 0 && setConnectedUsers(users);
+      });
+    }
+
     if (chats.length > 0 && !router.query.message) {
       router.push(`/messages?message=${chats[0].messagesWith}`, undefined, {
         shallow: true,

@@ -19,7 +19,7 @@ import { NoMessages } from '../components/Layout/NoData';
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
   const router = useRouter();
-  const [connectedUsers, setConnectedUsers] = usestate([]);
+  const [connectedUsers, setConnectedUsers] = useState([]);
 
   const socket = useRef();
 
@@ -41,6 +41,13 @@ function Messages({ chatsData, user }) {
         shallow: true,
       });
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.emit('disconnect');
+        socket.current.off();
+      }
+    };
   }, []);
 
   return (
@@ -69,7 +76,12 @@ function Messages({ chatsData, user }) {
                     style={{ overflow: 'auto', maxHeight: '32rem' }}
                   >
                     {chats.map((chat, index) => (
-                      <Chat key={index} chat={chat} setChats={setChats} />
+                      <Chat
+                        connectedUsers={connectedUsers}
+                        key={index}
+                        chat={chat}
+                        setChats={setChats}
+                      />
                     ))}
                   </Segment>
                 </Comment.Group>

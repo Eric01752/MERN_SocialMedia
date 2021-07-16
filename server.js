@@ -16,12 +16,17 @@ const { addUser, removeUser } = require('./utilsServer/roomActions');
 io.on('connection', (socket) => {
   socket.on('join', async ({ userId }) => {
     const users = await addUser(userId, socket.id);
-
+    console.log(users);
     setInterval(() => {
       socket.emit('connectedUsers', {
         users: users.filter((user) => user.userId !== userId),
       });
     }, 10000);
+  });
+
+  socket.on('disconnect', () => {
+    removeUser(socket.id);
+    console.log('User Disconnected');
   });
 });
 

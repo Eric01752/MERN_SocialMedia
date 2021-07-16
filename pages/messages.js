@@ -40,7 +40,7 @@ function Messages({ chatsData, user }) {
         <Divider hidden />
 
         <div style={{ marginBottom: '10px' }}>
-          <ChatListSearch user={user} chats={chats} setChats={setChats} />
+          <ChatListSearch chats={chats} setChats={setChats} />
         </div>
 
         {chats.length > 0 ? (

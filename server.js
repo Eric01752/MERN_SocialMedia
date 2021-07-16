@@ -12,11 +12,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 connectDb();
 const { addUser, removeUser } = require('./utilsServer/roomActions');
+const { loadMessages } = require('./utilsServer/messageActions');
 
 io.on('connection', (socket) => {
   socket.on('join', async ({ userId }) => {
     const users = await addUser(userId, socket.id);
-    console.log(users);
+
     setInterval(() => {
       socket.emit('connectedUsers', {
         users: users.filter((user) => user.userId !== userId),
@@ -24,9 +25,16 @@ io.on('connection', (socket) => {
     }, 10000);
   });
 
+  socket.on('loadMessages', async ({ userId, messagesWith }) => {
+    const { chat, error } = await loadMessages(userId, messagesWith);
+
+    if (!error) {
+      socket.emit('messagesLoaded', { chat });
+    }
+  });
+
   socket.on('disconnect', () => {
     removeUser(socket.id);
-    console.log('User Disconnected');
   });
 });
 

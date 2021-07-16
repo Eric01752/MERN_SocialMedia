@@ -7,7 +7,7 @@ const loadMessages = async (userId, messagesWith) => {
     );
 
     const chat = user.chats.find(
-      (chat) => chat.messgaesWith._id.toString() === messagesWith
+      (chat) => chat.messagesWith._id.toString() === messagesWith
     );
 
     if (!chat) {

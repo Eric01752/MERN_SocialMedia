@@ -142,6 +142,7 @@ function Messages({ chatsData, user }) {
                             {messages.map((message, index) => (
                               <Message
                                 key={index}
+                                bannerProfilePic={bannerData.profilePicUrl}
                                 message={message}
                                 user={user}
                                 setMessages={setMessages}

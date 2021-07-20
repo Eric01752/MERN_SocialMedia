@@ -16,7 +16,7 @@ function MessageInputField({ socket, user, messagesWith }) {
             onChange={(e) => setText(e.target.value)}
             action={{
               color: 'blue',
-              icon: 'telegram place',
+              icon: 'telegram plane',
               disabled: text === '',
               loading: loading,
             }}

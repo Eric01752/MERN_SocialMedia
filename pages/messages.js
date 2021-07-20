@@ -33,6 +33,7 @@ function Messages({ chatsData, user }) {
   //This ref is the query string inside the url
   const openChatId = useRef('');
 
+  //Connection onMount useEffect
   useEffect(() => {
     if (!socket.current) {
       socket.current = io(baseUrl);
@@ -60,6 +61,7 @@ function Messages({ chatsData, user }) {
     };
   }, []);
 
+  //Load Messages useEffect
   useEffect(() => {
     const loadMessages = () => {
       socket.current.emit('loadMessages', {
@@ -82,6 +84,36 @@ function Messages({ chatsData, user }) {
       loadMessages();
     }
   }, [router.query.message]);
+
+  const sendMsg = (msg) => {
+    if (socket.current) {
+      socket.current.emit('sendNewMsg', {
+        userId: user._id,
+        msgSendToUserId: openChatId.current,
+        msg,
+      });
+    }
+  };
+
+  //Confirming msg is sent and receiving the messages useEffect
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on('msgSent', ({ newMsg }) => {
+        if (newMsg.receiver === openChatId.current) {
+          setMessages((prev) => [...prev, newMsg]);
+          setChats((prev) => {
+            const previousChat = prev.find(
+              (chat) => chat.messagesWith === newMsg.receiver
+            );
+            previousChat.lastMessage = newMsg.msg;
+            previousChat.date = newMsg.date;
+
+            return [...prev];
+          });
+        }
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -154,11 +186,7 @@ function Messages({ chatsData, user }) {
                       </>
                     </div>
 
-                    <MessageInputField
-                      socket={socket}
-                      user={user}
-                      messagesWith={openChatId.current}
-                    />
+                    <MessageInputField sendMsg={sendMsg} />
                   </>
                 )}
               </Grid.Column>

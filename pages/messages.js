@@ -18,6 +18,7 @@ import { NoMessages } from '../components/Layout/NoData';
 import Banner from '../components/Messages/Banner';
 import MessageInputField from '../components/Messages/MessageInputField';
 import Message from '../components/Messages/Message';
+import getUserInfo from '../utils/getUserInfo';
 
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
@@ -78,9 +79,17 @@ function Messages({ chatsData, user }) {
 
         openChatId.current = chat.messagesWith._id;
       });
+
+      socket.current.on('noChatFound', async () => {
+        const { name, profilePicUrl } = await getUserInfo(router.query.message);
+
+        setBannerData({ name, profilePicUrl });
+        setMessages([]);
+        openChatId.current = router.query.message;
+      });
     };
 
-    if (socket.current) {
+    if (socket.current && router.query.message) {
       loadMessages();
     }
   }, [router.query.message]);
@@ -165,12 +174,11 @@ function Messages({ chatsData, user }) {
                       }}
                     >
                       <>
+                        <div style={{ position: 'sticky', top: '0' }}>
+                          <Banner bannerData={bannerData} />
+                        </div>
                         {messages.length > 0 && (
                           <>
-                            <div style={{ position: 'sticky', top: '0' }}>
-                              <Banner bannerData={bannerData} />
-                            </div>
-
                             {messages.map((message, index) => (
                               <Message
                                 key={index}

@@ -21,6 +21,11 @@ import Message from '../components/Messages/Message';
 import getUserInfo from '../utils/getUserInfo';
 import newMsgSound from '../utils/newMsgSound';
 
+const scrollDivToBottom = (divRef) => {
+  divRef.current !== null &&
+    divRef.current.scrollIntoView({ behaviour: 'smooth' });
+};
+
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
   const router = useRouter();
@@ -30,6 +35,8 @@ function Messages({ chatsData, user }) {
 
   const [messages, setMessages] = useState([]);
   const [bannerData, setBannerData] = useState({ name: '', profilePicUrl: '' });
+
+  const divRef = useRef();
 
   //This ref is for persisting the state of the query string in url throught re-renders
   //This ref is the query string inside the url
@@ -87,6 +94,8 @@ function Messages({ chatsData, user }) {
         setBannerData({ name, profilePicUrl });
         setMessages([]);
         openChatId.current = router.query.message;
+
+        divRef.current && scrollDivToBottom(divRef);
       });
     };
 
@@ -176,6 +185,10 @@ function Messages({ chatsData, user }) {
     }
   }, []);
 
+  useEffect(() => {
+    messages.length > 0 && scrollDivToBottom(divRef);
+  }, [messages]);
+
   return (
     <>
       <Segment padded basic size='large' style={{ marginTop: '5px' }}>
@@ -234,6 +247,7 @@ function Messages({ chatsData, user }) {
                             {messages.map((message, index) => (
                               <Message
                                 key={index}
+                                divRef={divRef}
                                 bannerProfilePic={bannerData.profilePicUrl}
                                 message={message}
                                 user={user}

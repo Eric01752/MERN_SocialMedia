@@ -8,13 +8,14 @@ function Message({
   setMessages,
   messagesWith,
   bannerProfilePic,
+  divRef,
 }) {
   const [deleteIcon, showDeleteIcon] = useState(false);
 
   const ifYouSender = message.sender === user._id;
 
   return (
-    <div className='bubbleWrapper'>
+    <div className='bubbleWrapper' ref={divRef}>
       <div
         className={ifYouSender ? 'inlineContainer own' : 'inlineContainer'}
         onClick={() => ifYouSender && showDeleteIcon(!deleteIcon)}

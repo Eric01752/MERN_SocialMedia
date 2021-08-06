@@ -189,6 +189,22 @@ function Messages({ chatsData, user }) {
     messages.length > 0 && scrollDivToBottom(divRef);
   }, [messages]);
 
+  const deleteMsg = (messageId) => {
+    if (socket.current) {
+      socket.current.emit('deleteMsg', {
+        userId: user._id,
+        messagesWith: openChatId.current,
+        messageId,
+      });
+
+      socket.current.on('msgDeleted', () => {
+        setMessages((prev) =>
+          prev.filter((message) => message._id !== messageId)
+        );
+      });
+    }
+  };
+
   return (
     <>
       <Segment padded basic size='large' style={{ marginTop: '5px' }}>
@@ -251,8 +267,7 @@ function Messages({ chatsData, user }) {
                                 bannerProfilePic={bannerData.profilePicUrl}
                                 message={message}
                                 user={user}
-                                setMessages={setMessages}
-                                messagesWith={openChatId.current}
+                                deleteMsg={deleteMsg}
                               />
                             ))}
                           </>

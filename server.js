@@ -20,6 +20,7 @@ const {
   loadMessages,
   sendMsg,
   setMsgToUnread,
+  deleteMsg,
 } = require('./utilsServer/messageActions');
 
 io.on('connection', (socket) => {
@@ -57,6 +58,14 @@ io.on('connection', (socket) => {
 
     if (!error) {
       socket.emit('msgSent', { newMsg });
+    }
+  });
+
+  socket.on('deleteMsg', async ({ userId, messagesWith, messageId }) => {
+    const { success } = await deleteMsg(userId, messagesWith, messageId);
+
+    if (success) {
+      socket.emit('msgDeleted');
     }
   });
 

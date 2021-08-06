@@ -3,14 +3,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { parseCookies } from 'nookies';
-import {
-  Segment,
-  Header,
-  Divider,
-  Comment,
-  Grid,
-  Icon,
-} from 'semantic-ui-react';
+import { Segment, Header, Divider, Comment, Grid } from 'semantic-ui-react';
 import Chat from '../components/Chats/Chat';
 import ChatListSearch from '../components/Chats/ChatListSearch';
 import { useRouter } from 'next/router';
@@ -20,6 +13,7 @@ import MessageInputField from '../components/Messages/MessageInputField';
 import Message from '../components/Messages/Message';
 import getUserInfo from '../utils/getUserInfo';
 import newMsgSound from '../utils/newMsgSound';
+import cookie from 'js-cookie';
 
 const scrollDivToBottom = (divRef) => {
   divRef.current !== null &&
@@ -205,6 +199,22 @@ function Messages({ chatsData, user }) {
     }
   };
 
+  const deleteChat = async (messagesWith) => {
+    try {
+      await axios.delete(`${baseUrl}/api/chats/${messagesWith}`, {
+        headers: { Authorization: cookie.get('token') },
+      });
+
+      setChats((prev) =>
+        prev.filter((chat) => chat.messagesWith !== messagesWith)
+      );
+
+      router.push('/messages', undefined, { shallow: true });
+    } catch (error) {
+      alert('Error deleting chat');
+    }
+  };
+
   return (
     <>
       <Segment padded basic size='large' style={{ marginTop: '5px' }}>
@@ -235,7 +245,7 @@ function Messages({ chatsData, user }) {
                         connectedUsers={connectedUsers}
                         key={index}
                         chat={chat}
-                        setChats={setChats}
+                        deleteChat={deleteChat}
                       />
                     ))}
                   </Segment>

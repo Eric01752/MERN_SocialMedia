@@ -3,7 +3,7 @@ import { Divider, Comment, Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 import calculateTime from '../../utils/calculateTime';
 
-function Chat({ chat, setChats, connectedUsers }) {
+function Chat({ chat, connectedUsers, deleteChat }) {
   const router = useRouter();
 
   const isOnline =
@@ -39,7 +39,11 @@ function Chat({ chat, setChats, connectedUsers }) {
                     cursor: 'pointer',
                   }}
                 >
-                  <Icon name='trash alternate' color='red' />
+                  <Icon
+                    name='trash alternate'
+                    color='red'
+                    onClick={() => deleteChat(chat.messagesWith)}
+                  />
                 </div>
               </Comment.Metadata>
 

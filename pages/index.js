@@ -41,7 +41,7 @@ function Index({ user, postsData, errorLoading }) {
       socket.current.on('newMsgReceived', async ({ newMsg }) => {
         const { name, profilePicUrl } = await getUserInfo(newMsg.sender);
 
-        if (user.newMessagePopoup) {
+        if (user.newMessagePopup) {
           setNewMessageReceived({
             ...newMsg,
             senderName: name,
@@ -55,13 +55,6 @@ function Index({ user, postsData, errorLoading }) {
     }
 
     document.title = `Welcome, ${user.name.split(' ')[0]}`;
-
-    return () => {
-      if (socket.current) {
-        socket.current.emit('disconnect');
-        socket.current.off();
-      }
-    };
   }, []);
 
   useEffect(() => {

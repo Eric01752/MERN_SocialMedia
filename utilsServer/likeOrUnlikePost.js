@@ -48,7 +48,17 @@ const likeOrUnlikePost = async (postId, userId, like) => {
       }
     }
 
-    return { success: true };
+    const user = await UserModel.findById(userId);
+
+    const { name, profilePicUrl, username } = user;
+
+    return {
+      success: true,
+      name,
+      profilePicUrl,
+      username,
+      postByUserId: post.user.toString(),
+    };
   } catch (error) {
     return { error: 'Server error' };
   }

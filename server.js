@@ -22,6 +22,7 @@ const {
   setMsgToUnread,
   deleteMsg,
 } = require('./utilsServer/messageActions');
+const { likeOrUnlikePost } = require('./utilsServer/likeOrUnlikePost');
 
 io.on('connection', (socket) => {
   socket.on('join', async ({ userId }) => {
@@ -32,6 +33,14 @@ io.on('connection', (socket) => {
         users: users.filter((user) => user.userId !== userId),
       });
     }, 10000);
+  });
+
+  socket.on('likePost', async ({ postId, userId, like }) => {
+    const { success, error } = await likeOrUnlikePost(postId, userId, like);
+
+    if (success) {
+      socket.emit('postLiked');
+    }
   });
 
   socket.on('loadMessages', async ({ userId, messagesWith }) => {

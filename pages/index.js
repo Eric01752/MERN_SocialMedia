@@ -107,6 +107,7 @@ function Index({ user, postsData, errorLoading }) {
             {posts.map((post) => (
               <CardPost
                 key={post._id}
+                socket={socket}
                 post={post}
                 user={user}
                 setPosts={setPosts}

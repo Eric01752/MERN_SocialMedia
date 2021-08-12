@@ -22,7 +22,7 @@ function SideMenu({
       >
         <Link href='/'>
           <List.Item active={isActive('/')}>
-            <Icon name='home' size='large' color={isActive('/') && 'teal'} />
+            <Icon name='home' size='large' color={isActive('/') && 'blue'} />
             <List.Content>{pc && <List.Header content='Home' />}</List.Content>
           </List.Item>
         </Link>
@@ -34,7 +34,7 @@ function SideMenu({
               name={unreadMessage ? 'hand point right' : 'mail outline'}
               size='large'
               color={
-                (isActive('/messages') && 'teal') || (unreadMessage && 'orange')
+                (isActive('/messages') && 'blue') || (unreadMessage && 'orange')
               }
             />
             <List.Content>
@@ -50,7 +50,7 @@ function SideMenu({
               name={unreadNotification ? 'hand point right' : 'bell outline'}
               size='large'
               color={
-                (isActive('/notifications') && 'teal') ||
+                (isActive('/notifications') && 'blue') ||
                 (unreadNotification && 'orange')
               }
             />
@@ -66,7 +66,7 @@ function SideMenu({
             <Icon
               name='user'
               size='large'
-              color={router.query.username === username && 'teal'}
+              color={router.query.username === username && 'blue'}
             />
             <List.Content>
               {pc && <List.Header content='Account' />}

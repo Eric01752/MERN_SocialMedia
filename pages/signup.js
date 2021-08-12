@@ -110,6 +110,10 @@ function Signup() {
     await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   };
 
+  useEffect(() => {
+    document.title = 'Social Media Signup';
+  }, []);
+
   return (
     <>
       <HeaderMessage />

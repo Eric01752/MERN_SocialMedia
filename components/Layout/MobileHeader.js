@@ -17,7 +17,7 @@ function MobileHeader({
         <Container text>
           <Link href='/'>
             <Menu.Item header active={isActive('/')}>
-              <Icon name='rss' size='large' />
+              <Icon name='home' size='large' />
             </Menu.Item>
           </Link>
 

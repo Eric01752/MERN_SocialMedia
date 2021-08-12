@@ -41,7 +41,7 @@ function Login() {
   };
 
   useEffect(() => {
-    document.title = 'Welcome Back';
+    document.title = 'Social Media Login';
     const userEmail = cookie.get('userEmail');
     if (userEmail) setUser((prev) => ({ ...prev, email: userEmail }));
   }, []);

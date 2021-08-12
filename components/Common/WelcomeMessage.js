@@ -8,7 +8,7 @@ export const HeaderMessage = () => {
 
   return (
     <Message
-      color='teal'
+      color='blue'
       attached
       header={signupRoute ? 'Get Started' : 'Welcome Back'}
       icon={signupRoute ? 'settings' : 'privacy'}

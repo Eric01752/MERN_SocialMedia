@@ -23,6 +23,7 @@ const {
   deleteMsg,
 } = require('./utilsServer/messageActions');
 const { likeOrUnlikePost } = require('./utilsServer/likeOrUnlikePost');
+const { commentPost } = require('./utilsServer/commentPost');
 
 io.on('connection', (socket) => {
   socket.on('join', async ({ userId }) => {
@@ -46,11 +47,42 @@ io.on('connection', (socket) => {
         const receiverSocket = findConnectedUser(postByUserId);
 
         if (receiverSocket && like) {
-          io.to(receiverSocket.socketId).emit('newNotificationRecevied', {
+          io.to(receiverSocket.socketId).emit('newNotificationReceived', {
             name,
             profilePicUrl,
             username,
             postId,
+            notificationType: 'newLike',
+          });
+        }
+      }
+    }
+  });
+
+  socket.on('commentPost', async ({ postId, userId, text }) => {
+    const {
+      success,
+      name,
+      profilePicUrl,
+      username,
+      postByUserId,
+      commentId,
+      error,
+    } = await commentPost(postId, userId, text);
+
+    if (success) {
+      socket.emit('postCommented', { commentId });
+
+      if (postByUserId !== userId) {
+        const receiverSocket = findConnectedUser(postByUserId);
+
+        if (receiverSocket) {
+          io.to(receiverSocket.socketId).emit('newNotificationReceived', {
+            name,
+            profilePicUrl,
+            username,
+            postId,
+            notificationType: 'newComment',
           });
         }
       }

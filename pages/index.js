@@ -20,7 +20,7 @@ import newMsgSound from '../utils/newMsgSound';
 import NotificationPortal from '../components/Home/NotificationPortal';
 
 function Index({ user, postsData, errorLoading }) {
-  const [posts, setPosts] = useState(postsData);
+  const [posts, setPosts] = useState(postsData || []);
   const [showToastr, setShowToastr] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -84,9 +84,16 @@ function Index({ user, postsData, errorLoading }) {
   useEffect(() => {
     if (socket.current) {
       socket.current.on(
-        'newNotificationRecevied',
-        ({ name, profilePicUrl, username, postId }) => {
-          setNewNotification({ name, profilePicUrl, username, postId });
+        'newNotificationReceived',
+        ({ name, profilePicUrl, username, postId, notificationType }) => {
+          setNewNotification({
+            name,
+            profilePicUrl,
+            username,
+            postId,
+            notificationType,
+          });
+
           showNotificationPopup(true);
         }
       );

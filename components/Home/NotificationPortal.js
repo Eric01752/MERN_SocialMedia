@@ -11,7 +11,8 @@ function NotificationPortal({
 }) {
   const router = useRouter();
 
-  const { name, profilePicUrl, username, postId } = newNotification;
+  const { name, profilePicUrl, username, postId, notificationType } =
+    newNotification;
 
   return (
     <TransitionablePortal
@@ -40,7 +41,9 @@ function NotificationPortal({
                 <Feed.User onClick={() => router.push(`/${username}`)}>
                   {name}{' '}
                 </Feed.User>{' '}
-                liked your{' '}
+                {notificationType === 'newLike'
+                  ? 'liked your'
+                  : 'commented on your'}{' '}
                 <a onClick={() => router.push(`/post/${postId}`)}> post</a>
                 <Feed.Date>{calculateTime(Date.now())}</Feed.Date>
               </Feed.Summary>

@@ -198,7 +198,7 @@ function CardPost({ post, user, setPosts, setShowToastr, socket }) {
             {comments.length > 3 && (
               <Button
                 content='View More'
-                color='teal'
+                color='blue'
                 basic
                 circular
                 onClick={() => setShowModal(true)}
@@ -209,6 +209,7 @@ function CardPost({ post, user, setPosts, setShowToastr, socket }) {
 
             <CommentInputField
               user={user}
+              socket={socket}
               postId={post._id}
               setComments={setComments}
             />

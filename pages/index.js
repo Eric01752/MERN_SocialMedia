@@ -122,7 +122,7 @@ function Index({ user, postsData, errorLoading }) {
         />
       )}
 
-      <Segment>
+      <Segment style={{ backgroundColor: '#F8F8FF', marginTop: '10px' }}>
         <CreatePost user={user} setPosts={setPosts} />
 
         {posts.length === 0 || errorLoading ? (

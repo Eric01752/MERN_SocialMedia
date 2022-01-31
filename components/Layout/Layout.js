@@ -55,13 +55,13 @@ function Layout({ children, user }) {
                           </Sticky>
                         </Grid.Column>
 
-                        <Grid.Column width={10}>
+                        <Grid.Column width={11}>
                           <Visibility context={contextRef}>
                             {children}
                           </Visibility>
                         </Grid.Column>
 
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                           <Sticky context={contextRef}>
                             <Segment basic>
                               <Search />
@@ -84,13 +84,13 @@ function Layout({ children, user }) {
                   <Grid>
                     {!messagesRoute ? (
                       <>
-                        <Grid.Column floated='left' width={2}>
+                        <Grid.Column floated='left' width={3}>
                           <Sticky context={contextRef}>
                             <SideMenu user={user} pc={false} />
                           </Sticky>
                         </Grid.Column>
 
-                        <Grid.Column width={14}>
+                        <Grid.Column width={13}>
                           <Visibility context={contextRef}>
                             {children}
                           </Visibility>
